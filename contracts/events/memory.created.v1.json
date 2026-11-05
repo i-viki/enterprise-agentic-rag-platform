@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "MemoryCreatedEvent",
+  "type": "object",
+  "required": [
+    "event_id",
+    "timestamp",
+    "tenant_id",
+    "user_id",
+    "memory_id",
+    "kind",
+    "content",
+    "source_reference",
+    "confidence"
+  ],
+  "properties": {
+    "event_id": { "type": "string", "format": "uuid" },
+    "timestamp": { "type": "string", "format": "date-time" },
+    "tenant_id": { "type": "string" },
+    "user_id": { "type": "string" },
+    "memory_id": { "type": "string", "format": "uuid" },
+    "kind": { "type": "string", "enum": ["episodic", "semantic", "procedural", "working"] },
+    "content": { "type": "string" },
+    "source_type": { "type": "string" },
+    "source_reference": { "type": "string" },
+    "confidence": { "type": "number", "minimum": 0.0, "maximum": 1.0 },
+    "revision": { "type": "integer", "default": 1 },
+    "metadata": { "type": "object" }
+  }
+}

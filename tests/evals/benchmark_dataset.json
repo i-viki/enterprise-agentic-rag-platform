@@ -1,0 +1,38 @@
+[
+  {
+    "id": "tc-001",
+    "query": "What is the maximum domestic flight reimbursement allowed under policy?",
+    "expected_answer": "Domestic flights are reimbursed up to economy class limit of $500 without VP approval.",
+    "ground_truth_context": "Corporate Travel Policy Section 4.1: Domestic flights are reimbursed up to economy class limit of $500. Any higher fare requires VP approval.",
+    "clearance_level": 1
+  },
+  {
+    "id": "tc-002",
+    "query": "What is the procedure for reporting a security incident or lost laptop?",
+    "expected_answer": "Report lost hardware to the SOC helpdesk within 1 hour and initiate remote wipe through IT portal.",
+    "ground_truth_context": "InfoSec SOP 12: Lost laptops or mobile devices must be reported to the SOC helpdesk within 1 hour. An automated remote wipe will be initiated immediately.",
+    "clearance_level": 1
+  },
+  {
+    "id": "tc-003",
+    "query": "What are the allowed authentication mechanisms for internal microservices?",
+    "expected_answer": "Internal microservices must use mTLS with SPIFFE/SPIRE x509 certificates and JWT bearer tokens.",
+    "ground_truth_context": "Architecture Governance Guideline 8: All East-West microservice traffic must be secured via mTLS using SPIFFE/SPIRE x509 certificates alongside signed JWT tokens.",
+    "clearance_level": 2
+  },
+  {
+    "id": "tc-004",
+    "query": "What is the data retention requirement for customer financial audit logs?",
+    "expected_answer": "Customer financial audit logs must be retained for 7 years in write-once-read-many storage.",
+    "ground_truth_context": "Compliance Policy FIN-901: All transaction ledgers and customer audit records must be preserved for exactly 7 years in immutable WORM storage.",
+    "clearance_level": 3
+  },
+  {
+    "id": "tc-005",
+    "query": "How many days of paid parental leave are employees entitled to?",
+    "expected_answer": "Eligible full-time employees receive 16 weeks of fully paid parental leave.",
+    "ground_truth_context": "Employee Handbook Benefits 2026: Full-time employees with at least 6 months of tenure are entitled to 16 weeks of fully paid parental leave.",
+    "clearance_level": 1
+  }
+]
+

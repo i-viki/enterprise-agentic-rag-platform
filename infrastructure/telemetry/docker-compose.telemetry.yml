@@ -1,0 +1,60 @@
+services:
+  jaeger:
+    image: jaegertracing/all-in-one:1.55
+    container_name: enterprise-rag-jaeger
+    ports:
+      - "16686:16686" # Jaeger Web UI
+      - "4317"       # OTLP gRPC receiver inside docker network
+    environment:
+      - COLLECTOR_OTLP_ENABLED=true
+
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib:0.96.0
+    container_name: enterprise-rag-otel-collector
+    command: ["--config=/etc/otel-collector-config.yaml"]
+    volumes:
+      - ./otel-collector-config.yaml:/etc/otel-collector-config.yaml:ro
+    ports:
+      - "4317:4317" # OTLP gRPC
+      - "4318:4318" # OTLP HTTP
+      - "8889:8889" # Prometheus metrics exporter
+    depends_on:
+      - jaeger
+
+  prometheus:
+    image: prom/prometheus:v2.51.0
+    container_name: enterprise-rag-prometheus
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    ports:
+      - "9090:9090"
+
+  grafana:
+    image: grafana/grafana:10.4.0
+    container_name: enterprise-rag-grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+      - GF_DASHBOARDS_DEFAULT_HOME_DASHBOARD_PATH=/var/lib/grafana/dashboards/enterprise_rag_dashboard.json
+    volumes:
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./grafana/dashboards:/var/lib/grafana/dashboards:ro
+    depends_on:
+      - prometheus
+
+  langfuse:
+    image: langfuse/langfuse:2
+    container_name: enterprise-rag-langfuse
+    ports:
+      - "3100:3000"
+    environment:
+      - DATABASE_URL=postgresql://rag_admin:rag_secure_password_2026@host.docker.internal:5432/langfuse
+      - NEXTAUTH_SECRET=enterprise_langfuse_secret_2026
+      - SALT=enterprise_langfuse_salt_2026
+      - NEXTAUTH_URL=http://localhost:3100
+      - TELEMETRY_ENABLED=false
+

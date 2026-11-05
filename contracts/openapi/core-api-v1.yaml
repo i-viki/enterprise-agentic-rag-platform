@@ -1,0 +1,156 @@
+openapi: 3.0.3
+info:
+  title: Guardrail Governance Service (Control Plane)
+  version: 1.0.0
+  description: Enterprise security perimeter, PII tokenization, prompt injection defense, and query routing gateway.
+paths:
+  /api/v1/cognition/query:
+    post:
+      summary: Submit a user query to the governed agentic RAG platform
+      description: Applies Tier-1 and Tier-1.5 guardrails, then forwards to the cognitive memory engine and returns an authoritative response.
+      parameters:
+        - in: header
+          name: X-Tenant-Id
+          schema:
+            type: string
+          required: false
+          description: Enterprise Tenant ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClientQueryRequest'
+      responses:
+        '200':
+          description: Verified, grounded response with memory citations
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientQueryResponse'
+        '400':
+          description: Safety policy violation (Prompt Injection or Malicious Input)
+        '403':
+          description: Usage policy violation (Llama Guard classified unsafe)
+        '429':
+          description: Rate limit exceeded
+
+  /api/v1/cognition/stream:
+    post:
+      summary: Stream tokens via Server-Sent Events (SSE)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClientQueryRequest'
+      responses:
+        '200':
+          description: Server-Sent Events stream of response tokens
+          content:
+            text/event-stream:
+              schema:
+                type: string
+
+  /api/v1/cognition/audit-logs:
+    get:
+      summary: Fetch recent cryptographic audit ledger entries
+      description: Returns recent immutable audit log transactions from PostgreSQL, including trace IDs, event types, guardrail verdicts, detected PII, and latencies.
+      parameters:
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            default: 15
+          required: false
+          description: Maximum number of audit records to retrieve
+      responses:
+        '200':
+          description: List of recent audit log records
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AuditLogEntry'
+
+components:
+  schemas:
+    AuditLogEntry:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: "b2567d39-8510-48b6-8992-2143f059ee3d"
+        trace_id:
+          type: string
+          example: "e6a5cd37f5074241a1f0c90d991f95b6"
+        event_type:
+          type: string
+          example: "COGNITION_QUERY_SUCCESS"
+        guardrail_status:
+          type: string
+          enum: [CLEAN, SANITIZED, BLOCKED]
+          example: "CLEAN"
+        pii_entities_detected:
+          type: string
+          example: "[\"SSN\",\"EMAIL\"]"
+        execution_time_ms:
+          type: integer
+          example: 842
+        created_at:
+          type: string
+          example: "2026-11-06 02:43:26.58994+05:30"
+    ClientQueryRequest:
+      type: object
+      required:
+        - prompt
+      properties:
+        prompt:
+          type: string
+          example: "What is our company's Q3 travel expense reimbursement limit?"
+        thread_id:
+          type: string
+          example: "thread-user-456"
+        user_id:
+          type: string
+          example: "emp-7890"
+        tenant_id:
+          type: string
+          example: "tenant-enterprise-prod"
+        clearance_level:
+          type: integer
+          default: 1
+          example: 2
+        user_roles:
+          type: array
+          items:
+            type: string
+          example: ["FINANCE_ANALYST", "EMPLOYEE"]
+
+    ClientQueryResponse:
+      type: object
+      properties:
+        trace_id:
+          type: string
+        answer:
+          type: string
+        citations:
+          type: array
+          items:
+            type: object
+            properties:
+              memory_id:
+                type: string
+              source_reference:
+                type: string
+              confidence:
+                type: number
+        grounding_score:
+          type: number
+        is_grounded:
+          type: boolean
+        latency_ms:
+          type: integer
+

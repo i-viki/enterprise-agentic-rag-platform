@@ -1,0 +1,92 @@
+openapi: 3.0.3
+info:
+  title: Hybrid Retrieval & Memory Engine (AI Substrate)
+  version: 1.0.0
+  description: LangGraph state machine, hybrid pgvector HNSW + BM25 RRF search, and Self-RAG verification.
+paths:
+  /v1/agent/cognition:
+    post:
+      summary: Execute LangGraph agent cognitive cycle
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AgentCognitionRequest'
+      responses:
+        '200':
+          description: Agent response with grounded facts
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentCognitionResponse'
+
+  /v1/agent/cognition/stream:
+    post:
+      summary: Stream LangGraph agent execution tokens via SSE
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AgentCognitionRequest'
+      responses:
+        '200':
+          description: SSE token stream
+          content:
+            text/event-stream:
+              schema:
+                type: string
+
+  /v1/memories:
+    post:
+      summary: Ingest a new memory record
+    get:
+      summary: Search memories via hybrid RRF
+
+components:
+  schemas:
+    AgentCognitionRequest:
+      type: object
+      required:
+        - trace_id
+        - tenant_id
+        - user_id
+        - sanitized_prompt
+      properties:
+        trace_id:
+          type: string
+        thread_id:
+          type: string
+        tenant_id:
+          type: string
+        user_id:
+          type: string
+        clearance_level:
+          type: integer
+          default: 1
+        user_roles:
+          type: array
+          items:
+            type: string
+        sanitized_prompt:
+          type: string
+
+    AgentCognitionResponse:
+      type: object
+      properties:
+        trace_id:
+          type: string
+        generated_answer:
+          type: string
+        retrieved_documents:
+          type: array
+          items:
+            type: object
+        grounding_score:
+          type: number
+        is_grounded:
+          type: boolean
+        loop_step:
+          type: integer
+

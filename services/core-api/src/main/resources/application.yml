@@ -1,0 +1,61 @@
+server:
+  port: ${CORE_API_PORT:8080}
+
+spring:
+  application:
+    name: guardrail-governance-service
+  datasource:
+    url: jdbc:postgresql://${POSTGRES_HOST:localhost}:${POSTGRES_PORT:5432}/${POSTGRES_DB:enterprise_rag}
+    username: ${POSTGRES_USER:rag_admin}
+    password: ${POSTGRES_PASSWORD:rag_secure_password_2026}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 2
+      connection-timeout: 5000
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      timeout: 2000ms
+
+# Inter-service routing & AI endpoints
+ai:
+  engine:
+    base-url: ${MEMORY_SERVICE_URL:http://localhost:8000}
+  ollama:
+    base-url: ${LLM_BASE_URL:http://localhost:11434}
+    guard-model: ${GUARD_MODEL_NAME:llama-guard3:1b}
+
+# Resilience4j Circuit Breaker
+resilience4j:
+  circuitbreaker:
+    instances:
+      cognitionEngine:
+        slidingWindowSize: 10
+        permittedNumberOfCallsInHalfOpenState: 3
+        slidingWindowType: COUNT_BASED
+        minimumNumberOfCalls: 5
+        waitDurationInOpenState: 10s
+        failureRateThreshold: 50
+        eventConsumerBufferSize: 10
+
+# Actuator & Observability
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "health,info,metrics,prometheus"
+  endpoint:
+    health:
+      show-details: always
+  metrics:
+    tags:
+      application: ${spring.application.name}
+
+# Logging Configuration
+logging:
+  level:
+    root: INFO
+    com.enterprisrag.governance: DEBUG
+

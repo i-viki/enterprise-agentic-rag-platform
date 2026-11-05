@@ -1,0 +1,288 @@
+/* ==============================================================================
+   Refined Dark-Canvas Layout & Precision Surfaces
+   ============================================================================== */
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: var(--canvas);
+}
+
+/* 56px Sticky Top Navigation */
+.app-header {
+  height: 56px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 24px;
+  background-color: var(--canvas);
+  border-bottom: 1px solid var(--hairline);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.brand-section {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brand-glyph {
+  width: 30px;
+  height: 30px;
+  background-color: var(--surface-1);
+  border: 1px solid var(--hairline-strong);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary);
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.08);
+}
+
+.brand-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.brand-title {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.3px;
+  color: var(--ink);
+}
+
+.brand-badge {
+  font-size: 11px;
+  font-weight: 500;
+  padding: 1px 7px;
+  background-color: var(--surface-2);
+  border: 1px solid var(--hairline);
+  color: var(--ink-muted);
+  border-radius: var(--radius-pill);
+}
+
+/* Nav Tabs - Compact Pill Toggle */
+.nav-toggle-group {
+  display: flex;
+  align-items: center;
+  background-color: var(--surface-1);
+  padding: 3px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--hairline);
+}
+
+.nav-toggle-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink-subtle);
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-pill);
+}
+
+.nav-toggle-item:hover:not(.active) {
+  color: var(--ink);
+}
+
+.nav-toggle-item.active {
+  background-color: var(--surface-3);
+  color: var(--ink);
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.06);
+}
+
+/* Header Controls & Telemetry Pills */
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.clearance-select-pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background-color: var(--surface-1);
+  border: 1px solid var(--hairline);
+  padding: 4px 10px;
+  border-radius: var(--radius-md);
+  font-size: 12px;
+  color: var(--ink-muted);
+}
+
+.clearance-select-pill select {
+  background: transparent;
+  border: none;
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.clearance-select-pill select option {
+  background-color: var(--surface-1);
+  color: var(--ink);
+}
+
+.status-pills {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.status-pill {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  font-family: var(--font-mono);
+  padding: 3px 9px;
+  background-color: var(--surface-1);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-pill);
+  color: var(--ink-subtle);
+}
+
+.status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--semantic-success);
+}
+
+/* Main Canvas Content Area */
+.main-content {
+  flex: 1;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 28px 24px;
+  width: 100%;
+}
+
+/* Cards & Surface Containers */
+.card-panel {
+  background-color: var(--surface-1);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.04);
+}
+
+.card-panel-elevated {
+  background-color: var(--surface-2);
+  border: 1px solid var(--hairline-strong);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.card-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.2px;
+  color: var(--ink);
+}
+
+/* Buttons */
+.btn-primary {
+  background-color: var(--primary);
+  color: var(--on-primary);
+  border: none;
+  border-radius: var(--radius-md);
+  padding: 8px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-hover);
+}
+
+.btn-primary:active {
+  background-color: var(--primary-focus);
+}
+
+.btn-secondary {
+  background-color: var(--surface-1);
+  color: var(--ink);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-md);
+  padding: 8px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-secondary:hover {
+  background-color: var(--surface-2);
+  border-color: var(--hairline-strong);
+}
+
+/* Form Inputs */
+.input-text {
+  background-color: var(--surface-1);
+  color: var(--ink);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-md);
+  padding: 8px 12px;
+  font-size: 13px;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.input-text:focus {
+  border-color: var(--primary);
+  outline: 2px solid rgba(94, 106, 210, 0.25);
+}
+
+/* Status Badges */
+.status-badge {
+  font-size: 11px;
+  font-family: var(--font-mono);
+  font-weight: 500;
+  padding: 2px 8px;
+  border-radius: var(--radius-pill);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.status-badge-clean {
+  background-color: rgba(39, 166, 68, 0.12);
+  color: var(--semantic-success);
+  border: 1px solid rgba(39, 166, 68, 0.25);
+}
+
+.status-badge-sanitized {
+  background-color: rgba(122, 127, 173, 0.14);
+  color: var(--brand-secure);
+  border: 1px solid rgba(122, 127, 173, 0.3);
+}
+
+.status-badge-blocked {
+  background-color: rgba(239, 68, 68, 0.12);
+  color: var(--semantic-danger);
+  border: 1px solid rgba(239, 68, 68, 0.25);
+}
