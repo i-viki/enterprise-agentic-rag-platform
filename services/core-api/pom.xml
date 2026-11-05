@@ -12,6 +12,16 @@
 
     <name>guardrail-governance-service</name>
     <description>Enterprise Agentic RAG Control Plane, PII Vault &amp; Guardrail Governance</description>
+    <url>https://jayavignesh.dev</url>
+
+    <developers>
+        <developer>
+            <id>i-viki</id>
+            <name>Jayavignesh</name>
+            <email>hello@jayavignesh.dev</email>
+            <url>https://jayavignesh.dev</url>
+        </developer>
+    </developers>
 
     <parent>
         <groupId>org.springframework.boot</groupId>

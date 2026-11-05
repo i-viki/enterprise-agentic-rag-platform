@@ -8,7 +8,17 @@ version = "2.0.0"
 description = "Enterprise Agentic RAG Cognitive Memory & LangGraph State Machine Substrate"
 readme = "README.md"
 requires-python = ">=3.12,<3.13"
-authors = [{ name = "Enterprise AI Engineering Team" }]
+authors = [{ name = "Jayavignesh", email = "hello@jayavignesh.dev" }]
+keywords = [
+    "agentic-rag",
+    "langgraph",
+    "hybrid-search",
+    "pgvector",
+    "self-rag",
+    "fastapi",
+    "opentelemetry",
+    "langfuse",
+]
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
