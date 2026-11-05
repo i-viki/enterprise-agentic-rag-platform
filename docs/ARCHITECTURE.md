@@ -141,7 +141,7 @@ stateDiagram-v2
 
 To maximize recall and precision, the retrieval engine does not rely solely on dense vectors or keywords. It queries PostgreSQL using a single-trip SQL CTE combining **Dense Vector Distance** and **BM25 Full-Text Search**, scoring candidates via **Reciprocal Rank Fusion**:
 
-$$\text{RRF\_Score}(d) = \frac{1}{k + \text{dense\_rank}(d)} + \frac{1}{k + \text{lexical\_rank}(d)}$$
+$$\operatorname{RRF}(d) = \frac{1}{k + \operatorname{rank}_{\text{dense}}(d)} + \frac{1}{k + \operatorname{rank}_{\text{lexical}}(d)}$$
 
 Where constant $k = 60$.
 

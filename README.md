@@ -129,7 +129,7 @@ flowchart TB
 
 The platform eliminates retrieval blindspots by querying dense semantic vectors and lexical inverted indexes in a single transactional SQL CTE:
 
-$$\text{RRF\_Score}(d) = \frac{1}{60 + \text{dense\_rank}(d)} + \frac{1}{60 + \text{lexical\_rank}(d)}$$
+$$\operatorname{RRF}(d) = \frac{1}{60 + \operatorname{rank}_{\text{dense}}(d)} + \frac{1}{60 + \operatorname{rank}_{\text{lexical}}(d)}$$
 
 ```sql
 WITH dense_search AS (
